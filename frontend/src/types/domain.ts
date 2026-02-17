@@ -13,7 +13,7 @@ export type Order = {
   purchase: string
   product_quantity: number
   price: number
-  identifier_id: string
+  purchase_identifier: string
   currency: string
   date: string
 }

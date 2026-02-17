@@ -1,6 +1,6 @@
 import type { Customer, Order } from '../types/domain'
 
-const API_BASE_URL = (import.meta.env.VITE_API_URL ?? 'http://localhost:8000').replace(/\/+$/, '')
+const API_BASE_URL = (import.meta.env.VITE_API_URL ?? '/api').replace(/\/+$/, '')
 
 class ApiError extends Error {
   readonly status: number
@@ -13,6 +13,7 @@ class ApiError extends Error {
 }
 
 async function requestJson<T>(path: string): Promise<T> {
+    console.log(`Requesting API: ${API_BASE_URL}${path}`)
   const response = await fetch(`${API_BASE_URL}${path}`)
   if (!response.ok) {
     let message = `Erreur API (${response.status})`
