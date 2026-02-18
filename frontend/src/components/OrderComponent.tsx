@@ -3,32 +3,56 @@ import { fetchCustomerOrders } from "../api/customers";
 import type { Order } from "../types/domain";
 
 export default function OrderComponent({ customerId }: { customerId: number }) {
+    console.log("Render")
   const [orders, setOrders] = useState<Order[]>([]);
   const [isLoading, setIsLoading] = useState(true);
   const [errorMessage, setErrorMessage] = useState<string | null>(null);
+  const hasInvalidCustomerId = Number.isNaN(customerId) || customerId <= 0;
 
   useEffect(() => {
-    if (Number.isNaN(customerId)) {
-      setOrders([]);
-      setErrorMessage("Client invalide.");
-      setIsLoading(false);
+    if (hasInvalidCustomerId) {
       return;
     }
 
-    setIsLoading(true);
+    let isCancelled = false;
+
     fetchCustomerOrders(customerId)
-      .then((data) => {
+      .then(data => {
+        if (isCancelled) {
+          return;
+        }
+
         setOrders(data);
         setErrorMessage(null);
       })
       .catch(error => {
+        if (isCancelled) {
+          return;
+        }
+
         console.error("Erreur lors de la récupération des commandes:", error);
         setErrorMessage("Impossible de charger les commandes.");
       })
       .finally(() => {
+        if (isCancelled) {
+          return;
+        }
+
         setIsLoading(false);
       });
-  }, [customerId]);
+
+    return () => {
+      isCancelled = true;
+    };
+  }, [customerId, hasInvalidCustomerId]);
+
+  if (hasInvalidCustomerId) {
+    return (
+      <tr className="state-row state-error">
+        <td colSpan={7}>Client invalide.</td>
+      </tr>
+    );
+  }
 
   if (isLoading) {
     return (

@@ -29,7 +29,7 @@ export default function OrdersPage() {
               </tr>
              </thead>
              <tbody>
-               <OrderComponent customerId={customerId} />
+               <OrderComponent key={customerId} customerId={customerId} />
              </tbody>
           </table>
         </div>
