@@ -16,7 +16,7 @@ type OrderComponentProps = {
   onCustomerNameChange: (name: string) => void;
 };
 
-const EUR_TO_USD = 1.08;
+const EUR_TO_USD = 1.1826;
 const USD_TO_EUR = 1 / EUR_TO_USD;
 
 function normalizeCurrency(currency: string): DisplayCurrency | null {

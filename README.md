@@ -20,8 +20,9 @@ In backend folder open a terminal and use the command:
 ``` 
 composer install
 ```
+Start the server : `symfony server:start --no-tls`
 Then check if the app is running using this url below, you're supposed to see the symfony home page.  
-[Click Here !](http://127.0.0.1:8000/) 
+[Click Here !](http://127.0.0.1:8000/)  (Check if the port 8000 is free)
 
 ### 2. Install DB and Import datas into it 
 Now use these commands to create and install the DB :
