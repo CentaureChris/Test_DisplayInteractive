@@ -10,6 +10,7 @@ export type Customer = {
 
 export type Order = {
   lastname: string | null
+  firstname: string | null
   purchase: string
   product_quantity: number
   price: number

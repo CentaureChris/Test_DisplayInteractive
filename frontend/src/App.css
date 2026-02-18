@@ -53,6 +53,18 @@
   letter-spacing: 0.02em;
 }
 
+.page-subtitle {
+  margin: 0.2rem 0 0;
+  color: var(--text-soft);
+  font-size: 0.9rem;
+}
+
+.page-actions {
+  display: flex;
+  gap: 0.6rem;
+  align-items: center;
+}
+
 .table-wrap {
   overflow-x: auto;
   border-radius: 12px;
@@ -138,6 +150,14 @@
   font-weight: 600;
 }
 
+.totalCol {
+  font-weight: 700;
+}
+
+.totalCol td {
+  background: linear-gradient(0.5turn,  #b7c6e2 10%, #407ee9 100%) !important;
+  color: rgb(255, 255, 255) !important;
+}
 
 
 @keyframes rise-in {
@@ -154,6 +174,11 @@
 @media (max-width: 860px) {
   .page-shell {
     padding: 0.9rem;
+  }
+
+  .page-actions {
+    flex-wrap: wrap;
+    justify-content: flex-end;
   }
 
   .data-table {
