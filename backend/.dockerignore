@@ -1,0 +1,11 @@
+.git
+.gitignore
+.DS_Store
+.phpunit.cache
+var
+vendor
+tests
+compose.yaml
+compose.override.yaml
+.env.local
+.env.*.local

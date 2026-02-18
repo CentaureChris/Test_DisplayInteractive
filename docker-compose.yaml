@@ -1,0 +1,66 @@
+services:
+  db:
+    image: mysql:8.0
+    restart: unless-stopped
+    environment:
+      MYSQL_ROOT_PASSWORD: root
+      MYSQL_DATABASE: app_test_display_interactive
+    healthcheck:
+      test: ["CMD", "mysqladmin", "ping", "-h", "localhost", "-uroot", "-proot"]
+      interval: 10s
+      timeout: 5s
+      retries: 10
+      start_period: 20s
+    volumes:
+      - db_data:/var/lib/mysql
+    ports:
+      - "3306:3306"
+
+  backend-init:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: "no"
+    profiles: ["init"]
+    environment:
+      APP_ENV: dev
+      APP_DEBUG: "1"
+      APP_SECRET: 6a4456ebaa8e5931afa08e86bc2b5e72
+      DATABASE_URL: mysql://root:root@db:3306/app_test_display_interactive?serverVersion=8.0.37
+    depends_on:
+      db:
+        condition: service_healthy
+    volumes:
+      - ./customers_orders.sql:/app/var/import/customers_orders.sql:ro
+      - ./customers.csv:/app/var/import/customers.csv:ro
+      - ./purchases.csv:/app/var/import/purchases.csv:ro
+    command: ["php", "bin/console", "ugo:orders:import", "--no-interaction"]
+
+  backend:
+    build:
+      context: ./backend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    environment:
+      APP_ENV: dev
+      APP_DEBUG: "1"
+      APP_SECRET: 6a4456ebaa8e5931afa08e86bc2b5e72
+      DATABASE_URL: mysql://root:root@db:3306/app_test_display_interactive?serverVersion=8.0.37
+    depends_on:
+      db:
+        condition: service_healthy
+    ports:
+      - "8000:8000"
+
+  frontend:
+    build:
+      context: ./frontend
+      dockerfile: Dockerfile
+    restart: unless-stopped
+    depends_on:
+      - backend
+    ports:
+      - "5173:80"
+
+volumes:
+  db_data:
